@@ -105,6 +105,8 @@ let quantidadeCart = 0;
 
 let cart = []
 
+let arr = [];
+
 const seleciona = (elemento) => document.querySelector(elemento)
 const selecionaTodos = (elemento) => document.querySelectorAll(elemento)
 
@@ -142,8 +144,8 @@ const preencheModal = (item) => {
 
 const pegarKey = (e) => {
     let key = e.target.closest('.card-item').getAttribute('data-key')
-    console.log('Item clicada ' + key)
-    console.log(sorveteJson[key])
+    //console.log('Item clicada ' + key)
+    //console.log(sorveteJson[key])
     quantidadeProd = 1;
     modalkey = key;
     return key;
@@ -189,158 +191,118 @@ const mudarQuantidade = () => {
 }
 
 const abrirCarrinho = () => {
-  console.log('Qtd de itens no carrinho ' + cart.length)
-  if(cart.length > 0) {
-      // mostrar o carrinho
+  if(cart.length != 0) {
     seleciona('.cart-area').style.display = "flex";
-      seleciona('header').style.display = 'flex' // mostrar barra superior
+  } else {
+    seleciona('.cart-area').style.display = "none";
   }
-
-  // exibir aside do carrinho no modo mobile
-  seleciona('.button-remove').addEventListener('click', () => {
-      seleciona('.cart-area').style.display = "none";
-  })
-}
-
-const atualizarCarrinho = () => {
-
-// mostrar ou nao o carrinho
-if(cart.length > 0) {
-
-  // mostrar o carrinho
-  seleciona('.cart-area').style.display = "flex";
-
-      // crie as variaveis antes do for
-  let subtotal = 0
-  let desconto = 0
-  let total    = 0
-
-      // para preencher os itens do carrinho, calcular subtotal
-  for(let i in cart) {
-    // use o find para pegar o item por id
-    let Item = sorveteJson.find( (item) => item.id == cart[i].id )
-    console.log(Item)
-
-          // em cada item pegar o subtotal
-        subtotal += cart[i].price * cart[i].qt
-          //console.log(cart[i].price)
-
-    // fazer o clone, exibir na telas e depois preencher as informacoes
-    let cartItem = seleciona('.cart-item').cloneNode(true)
-    seleciona('.cart-area').append(cartItem)
-
-    let SizeName = cart[i].size
-
-    let Name = `${Item.name} (${SizeName})`
-
-    // preencher as informacoes
-    cartItem.querySelector('img').src = Item.img
-    cartItem.querySelector('.name').innerHTML = Name
-    cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
-
-    // selecionar botoes + e -
-    cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
-      console.log('Clicou no botão mais')
-      // adicionar apenas a quantidade que esta neste contexto
-      cart[i].qt++
-      // atualizar a quantidade
-      atualizarCarrinho()
-    })
-
-    cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
-      console.log('Clicou no botão menos')
-      if(cart[i].qt > 1) {
-        // subtrair apenas a quantidade que esta neste contexto
-        cart[i].qt--
-      } else {
-        // remover se for zero
-        cart.splice(i, 1)
-      }
-
-              (cart.length < 1) ? seleciona('header').style.display = 'flex' : ''
-
-      // atualizar a quantidade
-      atualizarCarrinho()
-    })
-
-    seleciona('.cart-area').append(cartItem)
-
-  } // fim do for
-
-  // fora do for
-  // calcule desconto 10% e total
-  //desconto = subtotal * 0.1
-  desconto = subtotal * 0
-  total = subtotal - desconto
-
-  // exibir na tela os resultados
-  // selecionar o ultimo span do elemento
-  seleciona('.subtotal span:last-child').innerHTML = formatoReal(subtotal)
-  seleciona('.desconto span:last-child').innerHTML = formatoReal(desconto)
-  seleciona('.total span:last-child').innerHTML    = formatoReal(total)
-
-} else {
-  // ocultar o carrinho
-  seleciona('.card-area').display.style = "flex"
-}
 }
 
 const adicionarNoCarrinho = () => {
-  seleciona('.Info--addButton').addEventListener('click', () => {
-      console.log('Adicionar no carrinho')
+  seleciona('.Info--addButton').addEventListener('click', (e) => {
+    // fecha o modal, recebe os dados e reseta a variavel quantidadeProd
 
-      // pegar dados da janela modal atual
-    // qual pizza? pegue o modalKey para usar pizzaJson[modalKey]
-    console.log("Pizza " + modalkey)
-    // tamanho
     let size = seleciona('.Info--size.selected').getAttribute('data-key')
-    console.log("Tamanho " + size)
-    // quantidade
-    console.log("Quant. " + quantidadeProd)
-      // preco
-      let price = seleciona('.Info--actualPrice').innerHTML.replace('R$&nbsp;', '')
-  
-      // crie um identificador que junte id e tamanho
-    // concatene as duas informacoes separadas por um símbolo, vc escolhe
-    let identificador = sorveteJson[modalkey].id+'t'+size
 
-      // antes de adicionar verifique se ja tem aquele codigo e tamanho
-      // para adicionarmos a quantidade
-      let key = cart.findIndex( (item) => item.identificador == identificador )
-      console.log(key)
+    let price = seleciona('.Info--actualPrice').innerHTML.replace('R$&nbsp;', '')
 
-      if(key > -1) {
-          // se encontrar aumente a quantidade
-          cart[key].qt += quantidadeProd
-      } else {
-          // adicionar objeto pizza no carrinho
-          let itemS = {
-              identificador,
-              id: sorveteJson[modalkey].id,
-              size, // size: size
-              qt: quantidadeProd,
-              price: parseFloat(price) // price: price
+    let quant = quantidadeProd;
+    quantidadeProd = 1;
+
+    let identificador = modalkey+"t"+size;
+
+    let key = cart.findIndex( (item) => item.identificador == identificador )
+        //console.log(key)
+
+        if(key > -1) {
+            // se encontrar aumente a quantidade
+            cart[key].qt += quant
+            console.log(cart[key].qt)
+        } else {
+            // adicionar objeto pizza no carrinho
+            let item = {
+                identificador,
+                id: sorveteJson[modalkey].id,
+                size, 
+                qt: quant,
+                price: parseFloat(price) 
+            }
+            cart.push(item)
           }
-          cart.push(itemS)
-          console.log(itemS)
-          console.log('Sub total R$ ' + (itemS.qt * itemS.price).toFixed(2))
-      }
-
-      fecharModal()
-      abrirCarrinho()
-      //atualizarCarrinho()
+  
+          fecharModal()
+          abrirCarrinho()
+          atualizarCarrinho()
   })
 }
 
+const atualizarCarrinho = (l) => {
 
+  seleciona('.itens-cart').innerHTML = '';
 
-const cartOpen = (item) => {
-  const cartArea = seleciona('.cart-area');
-  if (item > 0) {
-    cartArea.style.display = "flex";
-  } else {
-    cartArea.style.display = "none";
-  }
+  let subtotal = 0;
+  let total = 0;
+
+    for(let i in cart) {
+
+      let item = sorveteJson.find( (item) => item.id == cart[i].id )
+			console.log(item)
+      console.log(cart)
+      
+      subtotal += cart[i].price * cart[i].qt
+            //console.log(cart[i].price)
+
+      seleciona('.total').innerHTML = formatoReal(subtotal);
+
+	    // fazer o clone, exibir na telas e depois preencher as informacoes
+			let cartItem = seleciona('.cart-item').cloneNode(true)
+      seleciona('.itens-cart').append(cartItem)
+
+			let sizeName = cart[i].size
+
+			let name = `${item.name} (${sizeName})`
+
+			// preencher as informacoes
+			cartItem.querySelector('img').src = item.img
+			cartItem.querySelector('.desc-cart .name').innerHTML = name
+			cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
+      cartItem.querySelector('.price').innerHTML = `Preço: ${formatoReal(cart[i].price)}`
+
+      cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () => {
+				console.log('Clicou no botão mais')
+				// adicionar apenas a quantidade que esta neste contexto
+				cart[i].qt++
+				// atualizar a quantidade
+				atualizarCarrinho()
+			})
+
+			cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () => {
+				console.log('Clicou no botão menos')
+				if(cart[i].qt > 1) {
+					// subtrair apenas a quantidade que esta neste contexto
+					cart[i].qt--
+				} else {
+					// remover se for zero
+					cart.splice(i, 1)
+				}
+
+                (cart.length < 1) ? seleciona('.cart-area').style.display = 'none' : ''
+
+				// atualizar a quantidade
+				atualizarCarrinho()
+			})
+
+			seleciona('.itens-cart').append(cartItem)
+
+		} 
+}
+
+const finalizarCompra = () => {
+  seleciona('.buy').addEventListener('click', (e) => {
+  seleciona('.cart-area').style.display = "none";
+  cart = [];
+  seleciona('.itens-cart').innerHTML = '';
+  } )
 }
 
 sorveteJson.map((item, index ) => {
@@ -374,3 +336,4 @@ seleciona('.Info--cancelButton').addEventListener('click', () => {
 
 mudarQuantidade();
 adicionarNoCarrinho();
+finalizarCompra();
