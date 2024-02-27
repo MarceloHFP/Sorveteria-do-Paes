@@ -8,7 +8,10 @@
 </head>
 <body>
     <!-- header -->
-    <header><h1>Sorveteria do Paes</h1></header>
+    <header>
+        <h1>Sorveteria do Paes</h1>
+        <i class="fa-solid fa-user" id="icon"></i>
+    </header>
 
     <!-- main -->
     <main class="main">
@@ -91,7 +94,47 @@
                 <div class="Info--cancelButton">Cancelar</div>
             </div>
         </div>
+        <div class="login">
+            <div class="lg-container">
+                <div class="top-container">
+                    <h1>Faça seu Login agora!</h1>
+                    <label for="lgEmail">Email</label>
+                    <input type="text" class="lgEmail" required>
+                    <label for="lgSenha">Senha</label>
+                    <input type="password" class="lgSenha" required>
+                    <button class="btLogin">Faça o login</button>
+                </div>
+                <div class="btToCadas">
+                    <h1>Ou faça seu cadastro agora</h1>
+                    <button class="toCadas">Cadastre-se</button>
+                </div>
+            </div>
+        </div>
+        <div class="cadastro">
+            <div class="cd-container">
+                <div class="name">
+                    <div class="bloco-esquerdo">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="nome" required>
+                    </div>
+                    <div class="bloco-direito">
+                        <label for="sobrenome">Sobrenome</label>
+                        <input type="text" class="sobrenome" required>
+                    </div>
+                </div>
+                <label for="endereço">Endereço</label>
+                <input type="text" class="endereço" required>
+                <label for="CPF">CPF</label>
+                <input type="text" class="cpf" required>
+                <label for="cdEmail">Email</label>
+                <input type="email" class="cdEmail" required>
+                <label for="cdSenha">Senha</label>
+                <input type="password" class="cdSenha" required>
+                <button class="btCadas">Cadastre-se</button>
+            </div>
+        </div>
     </div>
+    <script src="https://kit.fontawesome.com/b23c342cc2.js" crossorigin="anonymous"></script>
     <script src="sorvetes.js"></script>
 </body>
 </html>

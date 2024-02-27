@@ -99,16 +99,19 @@ let sorveteJson = [
 
 let modalkey = 0;
 
-let quantidadeProd = 1;
-
 let quantidadeCart = 0;
 
 let cart = []
 
-let arr = [];
+let logado = false;
+
 
 const seleciona = (elemento) => document.querySelector(elemento)
 const selecionaTodos = (elemento) => document.querySelectorAll(elemento)
+
+const abrirLogin = () => seleciona('.login').style.display = "flex"
+
+const abrirCadas = () => seleciona('.cadastro').style.display = "flex"
 
 const formatoReal = (valor) => {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -138,7 +141,7 @@ const preencheModal = (item) => {
 
   seleciona('.Info--desc').innerHTML = item.description;
   seleciona('.modal-img img').src = item.img;
-  seleciona('.Info--actualPrice').innerHTML = item.price[2];
+  seleciona('.Info--actualPrice').innerHTML = formatoReal(item.price[2]);
   seleciona('.Info h1').innerHTML = item.name;
 }
 
@@ -199,8 +202,8 @@ const abrirCarrinho = () => {
 }
 
 const adicionarNoCarrinho = () => {
+ 
   seleciona('.Info--addButton').addEventListener('click', (e) => {
-    // fecha o modal, recebe os dados e reseta a variavel quantidadeProd
 
     let size = seleciona('.Info--size.selected').getAttribute('data-key')
 
@@ -236,7 +239,7 @@ const adicionarNoCarrinho = () => {
   })
 }
 
-const atualizarCarrinho = (l) => {
+const atualizarCarrinho = () => {
 
   seleciona('.itens-cart').innerHTML = '';
 
@@ -313,11 +316,15 @@ sorveteJson.map((item, index ) => {
   preenchePizzas(sorvItem, item, index);
 
   sorvItem.querySelector('.button-add').addEventListener('click', (e) => {
+    
+    abrirModal();
+
+    if(!logado) {
+      abrirLogin()
+    } else {
     e.preventDefault();
 
     let chave = pegarKey(e);
-
-    abrirModal();
 
     preencheModal(item);
 
@@ -326,7 +333,7 @@ sorveteJson.map((item, index ) => {
     seleciona('.Info--qt').innerHTML = quantidadeProd;
     
     escolherTamanho(chave);
-
+    }
   })
 })
 
