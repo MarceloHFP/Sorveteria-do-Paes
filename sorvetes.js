@@ -105,13 +105,99 @@ let cart = []
 
 let logado = false;
 
+let itens = [];
+
+let id;
+
+
+const getItensDB = () => JSON.parse(localStorage.getItem("dbclient")) ?? []
+const setItensDB = () => localStorage.setItem('dbclient', JSON.stringify(itens))
 
 const seleciona = (elemento) => document.querySelector(elemento)
 const selecionaTodos = (elemento) => document.querySelectorAll(elemento)
 
 const abrirLogin = () => seleciona('.login').style.display = "flex"
 
-const abrirCadas = () => seleciona('.cadastro').style.display = "flex"
+const iconPress = () => {
+  seleciona('.iconHeader').addEventListener('click', (e) => {
+    modalClose()
+    abrirModal()
+    abrirLogin()
+  })
+}
+
+setCadasItens = () => {
+  seleciona('.btCadas').addEventListener('click', (e) => {
+    
+    let a = 0;
+    let name = seleciona('.nome').value
+    let sobrenome = seleciona('.sobrenome').value
+    let endereco = seleciona('.endereco').value
+    let cpf = seleciona('.cpf').value
+    let email = seleciona('.cdEmail').value
+    let senha = seleciona('.cdSenha').value
+    let itensR = getItensDB();
+    
+    itensR.forEach((item) => {
+      if(item.email == email || item.cpf == cpf) {
+        a++;
+        alert("Email ou CPF ja cadastrado")
+      }
+    }) 
+
+    if(name != "" && sobrenome != "" && endereco != "" && cpf != "" && email != "" && senha != "" && a == 0) {
+    itens.push({'nome': name, 'sobrenome': sobrenome, 'endereco': endereco, 'cpf': cpf, 'email': email, 'senha': senha})
+    setItensDB()
+    modalClose()
+    abrirLogin()
+    }
+
+    console.log(itens)
+  })
+}
+
+const login = () => {
+  seleciona('.btLogin').addEventListener('click', (e) => {
+
+    let dados = getItensDB(); 
+    let email = seleciona('.lgEmail').value
+    let senha = seleciona('.lgSenha').value
+
+    dados.forEach((item, index) => {
+      if(item.email == email && item.senha == senha) {
+        id = index;
+      alert("Login efetuado");
+      logado = true;
+      modalClose()
+      fecharModal()
+    } else alert("Email ou senha invalido")
+    })
+  })
+}
+
+const modalClose = () => {
+
+  seleciona('.login').style.display = "none";
+  seleciona('.cadastro').style.display = "none";
+  seleciona('.modalbody').style.display = "none";
+  const modal = seleciona('.modal')
+
+  modal.onclick = e => {
+    if (e.target.className.indexOf('modal') !== -1) {
+     modal.style.display = "none"
+     seleciona('.login').style.display = "none";
+     seleciona('.cadastro').style.display = "none";
+     seleciona('.modalbody').style.display = "none";
+    }
+  }
+}
+
+const abrirCadas = () => {
+  seleciona('.toCadas').addEventListener('click', (e) => {
+    seleciona('.login').style.display = "none"
+  seleciona('.cadastro').style.display = "flex"
+  })
+}
 
 const formatoReal = (valor) => {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -302,6 +388,8 @@ const atualizarCarrinho = () => {
 
 const finalizarCompra = () => {
   seleciona('.buy').addEventListener('click', (e) => {
+  let dados = getItensDB()
+  alert(`Compra finalizada. Compra chega em 1 hora em ${dados[id].endereco}`)
   seleciona('.cart-area').style.display = "none";
   cart = [];
   seleciona('.itens-cart').innerHTML = '';
@@ -322,6 +410,9 @@ sorveteJson.map((item, index ) => {
     if(!logado) {
       abrirLogin()
     } else {
+
+    seleciona('.modalbody').style.display = "flex"
+
     e.preventDefault();
 
     let chave = pegarKey(e);
@@ -341,6 +432,11 @@ seleciona('.Info--cancelButton').addEventListener('click', () => {
   fecharModal();
 })
 
+modalClose();
+iconPress();
 mudarQuantidade();
 adicionarNoCarrinho();
 finalizarCompra();
+abrirCadas();
+setCadasItens();
+login();

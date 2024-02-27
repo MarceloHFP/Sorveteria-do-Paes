@@ -170,15 +170,72 @@ header i:hover {
 .top-container {
     display: flex;
     flex-direction: column;
-    height: 70%;
-    border: 1px solid black;
+    height: 80%;
+    border-bottom: 2px solid rgb(88, 88, 88);
+}
+
+.top-container h1 {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+.top-container label {
+    font-size: 20px;
+    margin-top: 1.5rem;
+}
+
+.top-container input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    padding: 5px 0px;
+    margin-bottom: 1.5rem;
+}
+
+.btLogin {
+    padding: 10px 0px;
+    background-color: #0696fc;
+    font-weight: bold;
+    color: white;
+    border-radius: 0.5rem;
+    border: 0;
+    font-size: 15px;
+}
+
+.btLogin:hover {
+    transition: background, color 0.4s;
+    background-color: #065cfc;
+    cursor: pointer;
 }
 
 .btToCadas {
-    height: 30%;
-    border: 1px solid black;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.btToCadas h1 {
+    font-size: 18px;
+}
+
+.btToCadas button {
+    padding: 10px 50px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #91fc06;
+    color: white;
+    border-radius: 0.5rem;
+    border: 0;
+}
+
+.btToCadas button:hover {
+    transition: background, color 0.4s;
+    background-color: #53e60f;
+    cursor: pointer;
+}
 
 .cadastro {
     width: 50%;
