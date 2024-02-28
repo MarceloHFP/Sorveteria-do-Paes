@@ -118,11 +118,21 @@ const selecionaTodos = (elemento) => document.querySelectorAll(elemento)
 
 const abrirLogin = () => seleciona('.login').style.display = "flex"
 
+const exitPress = () => {
+  seleciona('.exit').addEventListener('click', (e) => {
+    logado = false;
+    seleciona('.btExit').style.display = "none";
+  })
+}
 const iconPress = () => {
   seleciona('.iconHeader').addEventListener('click', (e) => {
+    if(!logado) {
     modalClose()
     abrirModal()
     abrirLogin()
+  } else {
+    seleciona('.btExit').style.display = "flex";
+  }
   })
 }
 
@@ -134,7 +144,7 @@ setCadasItens = () => {
     let sobrenome = seleciona('.sobrenome').value
     let endereco = seleciona('.endereco').value
     let cpf = seleciona('.cpf').value
-    let email = seleciona('.cdEmail').value
+    let email = seleciona('.cdEmail').value.toLowerCase();
     let senha = seleciona('.cdSenha').value
     let itensR = getItensDB();
     
@@ -160,7 +170,7 @@ const login = () => {
   seleciona('.btLogin').addEventListener('click', (e) => {
 
     let dados = getItensDB(); 
-    let email = seleciona('.lgEmail').value
+    let email = seleciona('.lgEmail').value.toLowerCase();
     let senha = seleciona('.lgSenha').value
 
     dados.forEach((item, index) => {
@@ -180,6 +190,8 @@ const modalClose = () => {
   seleciona('.login').style.display = "none";
   seleciona('.cadastro').style.display = "none";
   seleciona('.modalbody').style.display = "none";
+  seleciona('.lgEmail').value = "";
+  seleciona('.lgSenha').value= "";
   const modal = seleciona('.modal')
 
   modal.onclick = e => {
@@ -194,7 +206,11 @@ const modalClose = () => {
 
 const abrirCadas = () => {
   seleciona('.toCadas').addEventListener('click', (e) => {
-    seleciona('.login').style.display = "none"
+  seleciona('.cadastro').style.opacity = 0;
+  seleciona('.modal').style.opacity = 0;
+  setTimeout(() => seleciona('.modal').style.opacity = 1, 130)
+  setTimeout(() => seleciona('.cadastro').style.opacity = 1, 150)
+  seleciona('.login').style.display = "none"
   seleciona('.cadastro').style.display = "flex"
   })
 }
@@ -440,3 +456,4 @@ finalizarCompra();
 abrirCadas();
 setCadasItens();
 login();
+exitPress();
