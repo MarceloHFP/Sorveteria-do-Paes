@@ -116,22 +116,35 @@ const setItensDB = () => localStorage.setItem('dbclient', JSON.stringify(itens))
 const seleciona = (elemento) => document.querySelector(elemento)
 const selecionaTodos = (elemento) => document.querySelectorAll(elemento)
 
+const limpaValue = (itens) => {
+  itens.forEach((item) => {
+    seleciona(item).value = ""
+  })
+}
+
 const abrirLogin = () => seleciona('.login').style.display = "flex"
 
 const exitPress = () => {
   seleciona('.exit').addEventListener('click', (e) => {
-    logado = false;
-    seleciona('.btExit').style.display = "none";
+    logado = false
+    seleciona('.btExit').style.display = "none"
+    modalClose()
   })
 }
 const iconPress = () => {
   seleciona('.iconHeader').addEventListener('click', (e) => {
     if(!logado) {
-    modalClose()
+    checkClickOff()
     abrirModal()
     abrirLogin()
   } else {
-    seleciona('.btExit').style.display = "flex";
+    let exit = seleciona('.btExit')
+    exit.style.display = "flex";
+    onclick = e => {
+      if (e.target.className !== exit && e.target.className !== "fa-solid fa-user") {
+       exit.style.display = "none"
+      }
+    }
   }
   })
 }
@@ -169,29 +182,37 @@ setCadasItens = () => {
 const login = () => {
   seleciona('.btLogin').addEventListener('click', (e) => {
 
+    let a = 0;
     let dados = getItensDB(); 
     let email = seleciona('.lgEmail').value.toLowerCase();
     let senha = seleciona('.lgSenha').value
 
     dados.forEach((item, index) => {
       if(item.email == email && item.senha == senha) {
-        id = index;
+      id = index;
+      a++;
       alert("Login efetuado");
       logado = true;
       modalClose()
       fecharModal()
-    } else alert("Email ou senha invalido")
+      console.log(item)
+    } 
     })
+    if(a == 0) {
+      alert("Email ou senha invalido");
+    }
   })
 }
 
 const modalClose = () => {
-
   seleciona('.login').style.display = "none";
   seleciona('.cadastro').style.display = "none";
   seleciona('.modalbody').style.display = "none";
-  seleciona('.lgEmail').value = "";
-  seleciona('.lgSenha').value= "";
+  limpaValue(['.lgEmail','.lgSenha','.cdEmail','.cdSenha','.nome','.sobrenome','.endereco','.cpf'])
+}
+
+const checkClickOff = () => {
+
   const modal = seleciona('.modal')
 
   modal.onclick = e => {
@@ -206,12 +227,12 @@ const modalClose = () => {
 
 const abrirCadas = () => {
   seleciona('.toCadas').addEventListener('click', (e) => {
+
   seleciona('.cadastro').style.opacity = 0;
-  seleciona('.modal').style.opacity = 0;
-  setTimeout(() => seleciona('.modal').style.opacity = 1, 130)
   setTimeout(() => seleciona('.cadastro').style.opacity = 1, 150)
   seleciona('.login').style.display = "none"
   seleciona('.cadastro').style.display = "flex"
+
   })
 }
 
@@ -448,7 +469,7 @@ seleciona('.Info--cancelButton').addEventListener('click', () => {
   fecharModal();
 })
 
-modalClose();
+checkClickOff();
 iconPress();
 mudarQuantidade();
 adicionarNoCarrinho();

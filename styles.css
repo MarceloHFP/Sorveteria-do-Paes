@@ -2,6 +2,7 @@
 
 * {
     box-sizing: border-box;
+    outline: none;
 }
 
 body, html {
@@ -39,12 +40,11 @@ header i:hover {
     cursor: pointer;
 }
 
-
 .main {
     flex:1;
     margin-top:80px;
     height: auto;
-    margin-bottom: 0px;
+    padding-bottom: 0px;
 }
 
 .main h2 {
@@ -58,7 +58,6 @@ header i:hover {
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 30px;
     margin: 0px 30px;
-    margin-bottom: 30px;
 }
 
 .models {
@@ -151,7 +150,7 @@ header i:hover {
 }
 
 .login {
-    width: 50%;
+    width: 40%;
     height: 70%;
     background-color: #f2f2f2;
     border-radius: 1rem;
@@ -171,7 +170,6 @@ header i:hover {
     display: flex;
     flex-direction: column;
     height: 80%;
-    border-bottom: 2px solid rgb(88, 88, 88);
 }
 
 .top-container h1 {
@@ -200,6 +198,7 @@ header i:hover {
     font-weight: bold;
     color: white;
     border-radius: 0.5rem;
+    margin-top: 10px;
     border: 0;
     font-size: 15px;
 }
@@ -257,20 +256,19 @@ header i:hover {
 .name {
     display: flex;
     width: 100%;
+    justify-content: space-between;
 }
 
 .bloco-direito {
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
 }
 
 .bloco-esquerdo {
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
-    margin-right: 20px;
 }
 
 .cd-container input {
@@ -295,6 +293,7 @@ header i:hover {
     width: 80px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    box-shadow: 1px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .btExit button {
